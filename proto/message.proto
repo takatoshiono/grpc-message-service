@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package message;
+
+service MessageService {
+  rpc CreateConversation (CreateConversationRequest) returns (Conversation) {}
+  rpc CreateMessage (CreateMessageRequest) returns (Message) {}
+  rpc GetMessages (GetMessagesRequest) returns (Messages) {}
+}
+
+message CreateConversationRequest {
+}
+
+message Conversation {
+  uint32 id = 1;
+  int64 created_at = 3;
+}
+
+message CreateMessageRequest {
+  uint32 conversation_id = 1;
+  string body = 2;
+}
+
+message Message {
+  uint32 conversation_id = 1;
+  string body = 2;
+  int64 created_at = 3;
+}
+
+message GetMessagesRequest {
+  uint32 conversation_id = 1;
+}
+
+message Messages {
+  repeated Message messages = 1;
+}
