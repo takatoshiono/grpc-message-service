@@ -15,3 +15,16 @@ docker-tag:
 
 gcloud-docker-push:
 	gcloud docker -- push asia.gcr.io/grpc-message-service/server:latest
+
+gcloud-cluster-create:
+	gcloud container clusters create message-service
+	gcloud container clusters get-credentials message-service
+
+gcloud-cluster-delete:
+	kubectl delete service message-server
+	gcloud container clusters delete message-service
+
+gcloud-deploy:
+	kubectl run message-server --image asia.gcr.io/grpc-message-service/server:latest --port 50101
+	kubectl expose deployment message-server --type "LoadBalancer"
+	kubectl get service message-server
