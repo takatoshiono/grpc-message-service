@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: message-server
+spec:
+  containers:
+    - image: asia.gcr.io/grpc-message-service/server:latest
+      imagePullPolicy: Always
+      name: message-server
+      ports:
+        - containerPort: 50101

@@ -25,6 +25,6 @@ gcloud-cluster-delete:
 	gcloud container clusters delete message-cluster
 
 gcloud-deploy:
-	kubectl run message-server --image asia.gcr.io/grpc-message-service/server:latest --port 50101
+	kubectl create -f pod.yaml
 	kubectl expose deployment message-server --type "LoadBalancer"
 	kubectl get service message-server
