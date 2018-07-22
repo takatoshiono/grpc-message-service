@@ -22,9 +22,10 @@ gcloud-cluster-create:
 
 gcloud-cluster-delete:
 	kubectl delete service message-server
+	kubectl delete deployment message-server
 	gcloud container clusters delete message-cluster
 
 gcloud-deploy:
-	kubectl create -f pod.yaml
-	kubectl expose deployment message-server --type "LoadBalancer"
-	kubectl get service message-server
+	kubectl create -f deployment.yaml
+	kubectl create -f service.yaml
+	kubectl get service -w message-server
