@@ -1,0 +1,27 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: message-server
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        name: message-server
+    spec:
+      containers:
+        - name: esp
+          image: gcr.io/endpoints-release/endpoints-runtime:1
+          args: [
+            "--http2_port=9000",
+            "--service=message-server.endpoints.grpc-message-service.cloud.goog",
+            "--rollout_strategy=managed",
+            "--backend=grpc://127.0.0.1:50101"
+          ]
+          ports:
+            - containerPort: 9000
+        - image: asia.gcr.io/grpc-message-service/server:latest
+          imagePullPolicy: Always
+          name: message-server
+          ports:
+            - containerPort: 50101

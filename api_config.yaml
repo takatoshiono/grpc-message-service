@@ -1,0 +1,12 @@
+# The configuration schema is defined by service.proto file
+# https://github.com/googleapis/googleapis/blob/master/google/api/service.proto
+type: google.api.Service
+config_version: 3
+name: message-server.endpoints.grpc-message-service.cloud.goog
+title: Message gRPC API
+apis:
+  - name: message.MessageService
+usage:
+  rules:
+    - selector: "*"
+      allow_unregistered_calls: true
