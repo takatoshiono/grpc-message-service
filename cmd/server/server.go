@@ -19,12 +19,12 @@ func (s *server) CreateConversation(context.Context, *pb.CreateConversationReque
 }
 
 func (s *server) CreateMessage(context.Context, *pb.CreateMessageRequest) (*pb.Message, error) {
-	message := &pb.Message{ConversationId: "abc123", Body: "Hello", CreatedAt: time.Now().Unix()}
+	message := &pb.Message{ConversationId: "abc123", Sender: "alice", Body: "Hello", CreatedAt: time.Now().Unix()}
 	return message, nil
 }
 
 func (s *server) GetMessages(context.Context, *pb.GetMessagesRequest) (*pb.Messages, error) {
-	message := &pb.Message{ConversationId: "abc123", Body: "Hello", CreatedAt: time.Now().Unix()}
+	message := &pb.Message{ConversationId: "abc123", Sender: "alice", Body: "Hello", CreatedAt: time.Now().Unix()}
 	messages := &pb.Messages{Messages: []*pb.Message{message}}
 	return messages, nil
 }

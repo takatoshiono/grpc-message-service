@@ -18,13 +18,15 @@ message Conversation {
 
 message CreateMessageRequest {
   string conversation_id = 1;
-  string body = 2;
+  string sender = 2;
+  string body = 3;
 }
 
 message Message {
   string conversation_id = 1;
-  string body = 2;
-  int64 created_at = 3;
+  string sender = 2;
+  string body = 3;
+  int64 created_at = 4;
 }
 
 message GetMessagesRequest {
