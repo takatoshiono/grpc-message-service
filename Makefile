@@ -1,3 +1,5 @@
+IMAGE_VERSION := 0.2.0
+
 protoc:
 	protoc --descriptor_set_out=proto/api_descriptor.pb --go_out=plugins=grpc:. proto/message.proto
 
@@ -5,16 +7,16 @@ run-server:
 	go run cmd/server/main.go cmd/server/server.go
 
 docker-build:
-	docker build -t grpc-message-service-server .
+	docker build -t grpc-message-service-server:$(IMAGE_VERSION) .
 
 docker-run:
-	docker run --rm -p 50101:50101 grpc-message-service-server:latest
+	docker run --rm -p 50101:50101 grpc-message-service-server:$(IMAGE_VERSION)
 
 docker-tag:
-	docker tag grpc-message-service-server:latest asia.gcr.io/grpc-message-service/server:latest
+	docker tag grpc-message-service-server:$(IMAGE_VERSION) asia.gcr.io/grpc-message-service/server:$(IMAGE_VERSION)
 
 gcloud-docker-push:
-	gcloud docker -- push asia.gcr.io/grpc-message-service/server:latest
+	gcloud docker -- push asia.gcr.io/grpc-message-service/server:$(IMAGE_VERSION)
 
 gcloud-cluster-create:
 	gcloud container clusters create message-cluster --machine-type=g1-small
