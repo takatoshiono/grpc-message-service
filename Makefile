@@ -12,10 +12,8 @@ docker-build:
 docker-run:
 	docker run --rm -p 50101:50101 grpc-message-service-server:$(IMAGE_VERSION)
 
-docker-tag:
-	docker tag grpc-message-service-server:$(IMAGE_VERSION) asia.gcr.io/grpc-message-service/server:$(IMAGE_VERSION)
-
 gcloud-docker-push:
+	docker tag grpc-message-service-server:$(IMAGE_VERSION) asia.gcr.io/grpc-message-service/server:$(IMAGE_VERSION)
 	gcloud docker -- push asia.gcr.io/grpc-message-service/server:$(IMAGE_VERSION)
 
 gcloud-cluster-create:
