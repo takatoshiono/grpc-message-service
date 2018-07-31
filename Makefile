@@ -12,39 +12,42 @@ docker-build:
 docker-run:
 	docker run --rm -p 50101:50101 grpc-message-service-server:$(IMAGE_VERSION)
 
-gcloud-docker-push:
+docker-push:
 	docker tag grpc-message-service-server:$(IMAGE_VERSION) asia.gcr.io/grpc-message-service/server:$(IMAGE_VERSION)
 	gcloud docker -- push asia.gcr.io/grpc-message-service/server:$(IMAGE_VERSION)
 
-gcloud-cluster-create:
+cluster-create:
 	gcloud container clusters create message-cluster --machine-type=g1-small
 	gcloud container clusters get-credentials message-cluster
 
-gcloud-deploy:
-	kubectl create -f deployment.yaml
-	kubectl create -f service.yaml
-	kubectl get service -w message-server
-
-gcloud-deploy-delete:
-	kubectl delete service message-server
-	kubectl delete deployment message-server
+cluster-delete:
 	gcloud container clusters delete message-cluster
 
-gcloud-deploy-endpoint: # only once
+deploy:
+	echo "DEPRECATED: use deploy-with-endpoint"
+	#kubectl create -f deployment.yaml
+	#kubectl create -f service.yaml
+	#kubectl get service -w message-server
+
+delete-deploy:
+	echo "DEPRECATED: use delete-deploy-with-endpoint"
+	#kubectl delete service message-server
+	#kubectl delete deployment message-server
+
+deploy-endpoint: # only once
 	gcloud endpoints services deploy proto/api_descriptor.pb api_config.yaml
 
-gcloud-delete-endpoint: # will delete after 30 days
+delete-endpoint: # will delete after 30 days
 	gcloud endpoints services delete message-server.endpoints.grpc-message-service.cloud.goog
 
-gcloud-deploy-with-endpoint:
+deploy-with-esp:
 	kubectl create -f deployment-esp.yml
 	kubectl create -f service-esp.yml
 	kubectl get service -w
 
-gcloud-deploy-with-endpoint-delete:
+delete-deploy-with-esp:
 	kubectl delete service message-server
 	kubectl delete deployment message-server
-	gcloud container clusters delete message-cluster
 
 deploy-image:
 	kubectl set image deployment/message-server message-server=asia.gcr.io/grpc-message-service/server:$(IMAGE_VERSION)
