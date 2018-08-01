@@ -8,7 +8,6 @@ service MessageService {
   rpc CreateConversation (CreateConversationRequest) returns (Conversation) {
     option (google.api.http) = {
       post: "/v1/conversations"
-      body: "conversation"
     };
   }
   rpc CreateMessage (CreateMessageRequest) returns (Message) {
@@ -19,7 +18,7 @@ service MessageService {
   }
   rpc GetMessages (GetMessagesRequest) returns (Messages) {
     option (google.api.http) = {
-      get: "/v1/conversations/{conversation_id/messages"
+      get: "/v1/conversations/{conversation_id}/messages"
     };
   }
 }
