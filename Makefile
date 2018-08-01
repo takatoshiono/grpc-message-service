@@ -42,7 +42,7 @@ delete-deploy:
 	#kubectl delete service message-server
 	#kubectl delete deployment message-server
 
-deploy-endpoint: # only once
+deploy-endpoint:
 	gcloud endpoints services deploy proto/api_descriptor.pb api_config.yaml
 
 delete-endpoint: # will delete after 30 days
