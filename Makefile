@@ -17,7 +17,7 @@ docker-push:
 	gcloud docker -- push asia.gcr.io/grpc-message-service/server:$(IMAGE_VERSION)
 
 cluster-create:
-	gcloud container clusters create message-cluster --machine-type=g1-small
+	gcloud container clusters create message-cluster --num-nodes=1 --machine-type=g1-small
 	gcloud container clusters get-credentials message-cluster
 
 cluster-delete:
