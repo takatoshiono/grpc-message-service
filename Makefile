@@ -1,7 +1,15 @@
 IMAGE_VERSION := 0.2.0
+GOOGLEAPIS_DIR := $(shell ghq list -p googleapis)
 
 protoc:
-	protoc --descriptor_set_out=proto/api_descriptor.pb --go_out=plugins=grpc:. proto/message.proto
+	protoc \
+		--include_imports \
+		--include_source_info \
+		--proto_path=$(GOOGLEAPIS_DIR) \
+		--proto_path=. \
+		--descriptor_set_out=proto/api_descriptor.pb \
+		--go_out=plugins=grpc:. \
+		proto/message.proto
 
 run-server:
 	go run cmd/server/main.go cmd/server/server.go

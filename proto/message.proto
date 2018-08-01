@@ -2,10 +2,26 @@ syntax = "proto3";
 
 package message;
 
+import "google/api/annotations.proto";
+
 service MessageService {
-  rpc CreateConversation (CreateConversationRequest) returns (Conversation) {}
-  rpc CreateMessage (CreateMessageRequest) returns (Message) {}
-  rpc GetMessages (GetMessagesRequest) returns (Messages) {}
+  rpc CreateConversation (CreateConversationRequest) returns (Conversation) {
+    option (google.api.http) = {
+      post: "/v1/conversations"
+      body: "conversation"
+    };
+  }
+  rpc CreateMessage (CreateMessageRequest) returns (Message) {
+    option (google.api.http) = {
+      post: "/v1/conversations/{conversation_id}/messages"
+      body: "*"
+    };
+  }
+  rpc GetMessages (GetMessagesRequest) returns (Messages) {
+    option (google.api.http) = {
+      get: "/v1/conversations/{conversation_id/messages"
+    };
+  }
 }
 
 message CreateConversationRequest {
