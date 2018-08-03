@@ -13,6 +13,7 @@ spec:
         - name: esp
           image: gcr.io/endpoints-release/endpoints-runtime:1
           args: [
+            "--http_port=8000",
             "--http2_port=9000",
             "--service=message-server.endpoints.grpc-message-service.cloud.goog",
             "--rollout_strategy=managed",
