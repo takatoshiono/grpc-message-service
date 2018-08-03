@@ -14,7 +14,7 @@ func main() {
 	key := flag.String("api-key", "", "API key")
 	flag.Parse()
 
-	conn, err := grpc.Dial("35.190.236.190:9000", grpc.WithInsecure())
+	conn, err := grpc.Dial(":50101", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("failed to dial: %v", err)
 	}
