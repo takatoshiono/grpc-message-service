@@ -9,11 +9,12 @@ import (
 
 const projectID = "grpc-message-service"
 
-func NewCloudDatastoreClient() *datastore.Client {
+func NewCloudDatastoreClient() (*datastore.Client, error) {
 	ctx := context.Background()
 	client, err := datastore.NewClient(ctx, projectID)
 	if err != nil {
-		log.Fatalf("Failed to create client: %v", err)
+		log.Printf("Failed to create client: %v", err)
+		return client, err
 	}
-	return client
+	return client, nil
 }

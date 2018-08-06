@@ -13,8 +13,12 @@ type ConversationRespository struct {
 	client *datastore.Client
 }
 
-func NewConversationRepository() *ConversationRespository {
-	return &ConversationRespository{client: NewCloudDatastoreClient()}
+func NewConversationRepository() (*ConversationRespository, error) {
+	client, err := NewCloudDatastoreClient()
+	if err != nil {
+		return nil, nil
+	}
+	return &ConversationRespository{client: client}, nil
 }
 
 func (r *ConversationRespository) Save(c *entity.Conversation) (*entity.Conversation, error) {
@@ -22,7 +26,7 @@ func (r *ConversationRespository) Save(c *entity.Conversation) (*entity.Conversa
 	k := datastore.NameKey("Conversation", c.Id, nil)
 	_, err := r.client.Put(ctx, k, c)
 	if err != nil {
-		log.Fatalf("Failed to save conversation: %v", err)
+		log.Printf("Failed to save conversation: %v", err)
 		return c, err
 	}
 	return c, nil

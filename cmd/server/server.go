@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/golang/protobuf/ptypes"
-
 	pb "github.com/takatoshiono/grpc-message-service/proto"
 )
 
@@ -20,7 +19,11 @@ func (s *server) CreateConversation(ctx context.Context, in *pb.CreateConversati
 	return conversation, nil
 
 	//	c := entity.NewConversation()
-	//	r := cloud_datastore.NewConversationRepository()
+	//	r, err := cloud_datastore.NewConversationRepository()
+	//	if err != nil {
+	//		// FIXME: What should we do here?
+	//		log.Fatalf("Failed to create ConversationRepository: %v", err)
+	//	}
 	//	r.Save(c)
 	//
 	//	return &pb.Conversation{Id: c.Id, CreatedAt: c.CreatedAt}, nil
