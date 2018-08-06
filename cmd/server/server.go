@@ -18,6 +18,12 @@ func NewMessageServer() *server {
 func (s *server) CreateConversation(ctx context.Context, in *pb.CreateConversationRequest) (*pb.Conversation, error) {
 	conversation := &pb.Conversation{Name: "conversations/abc123", CreateTime: ptypes.TimestampNow()}
 	return conversation, nil
+
+	//	c := entity.NewConversation()
+	//	r := cloud_datastore.NewConversationRepository()
+	//	r.Save(c)
+	//
+	//	return &pb.Conversation{Id: c.Id, CreatedAt: c.CreatedAt}, nil
 }
 
 func (s *server) CreateMessage(ctx context.Context, in *pb.CreateMessageRequest) (*pb.Message, error) {
