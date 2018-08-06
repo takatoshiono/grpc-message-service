@@ -10,11 +10,14 @@ import (
 	"google.golang.org/grpc/metadata"
 )
 
+const defaultHostPort = ":50101"
+
 func main() {
 	key := flag.String("api-key", "", "API key")
+	hostPort := flag.String("host-port", "", "Service host and port (e.g., '"+defaultHostPort+"')")
 	flag.Parse()
 
-	conn, err := grpc.Dial(":50101", grpc.WithInsecure())
+	conn, err := grpc.Dial(*hostPort, grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("failed to dial: %v", err)
 	}
