@@ -9,20 +9,12 @@ import (
 	"github.com/takatoshiono/grpc-message-service/entity"
 )
 
-const projectID = "grpc-message-service"
-
 type ConversationRespository struct {
 	client *datastore.Client
 }
 
 func NewConversationRepository() *ConversationRespository {
-	ctx := context.Background()
-	client, err := datastore.NewClient(ctx, projectID)
-	if err != nil {
-		log.Fatalf("Failed to create client: %v", err)
-	}
-
-	return &ConversationRespository{client: client}
+	return &ConversationRespository{client: NewCloudDatastoreClient()}
 }
 
 func (r *ConversationRespository) Save(c *entity.Conversation) (*entity.Conversation, error) {
@@ -31,6 +23,7 @@ func (r *ConversationRespository) Save(c *entity.Conversation) (*entity.Conversa
 	_, err := r.client.Put(ctx, k, c)
 	if err != nil {
 		log.Fatalf("Failed to save conversation: %v", err)
+		return c, err
 	}
 	return c, nil
 }
