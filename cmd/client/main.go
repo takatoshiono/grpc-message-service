@@ -14,7 +14,7 @@ const defaultHostPort = ":50101"
 
 func main() {
 	key := flag.String("api-key", "", "API key")
-	hostPort := flag.String("host-port", "", "Service host and port (e.g., '"+defaultHostPort+"')")
+	hostPort := flag.String("host-port", defaultHostPort, "Service host and port (e.g., '"+defaultHostPort+"')")
 	flag.Parse()
 
 	conn, err := grpc.Dial(*hostPort, grpc.WithInsecure())
