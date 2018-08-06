@@ -9,8 +9,16 @@ $ make docker-run
 
 ## client
 
+gRPC API
+
 ```
-$ go run cmd/client/main.go
+$ go run cmd/client/main.go -api-key API_KEY
+```
+
+JSON API
+
+```
+$ curl -H "x-api-key: API_KEY" -X POST http://HOST:PORT/v1/conversations
 ```
 
 ## deploy

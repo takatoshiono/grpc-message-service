@@ -6,7 +6,3 @@ name: message-server.endpoints.grpc-message-service.cloud.goog
 title: Message gRPC API
 apis:
   - name: message.MessageService
-usage:
-  rules:
-    - selector: "*"
-      allow_unregistered_calls: true
