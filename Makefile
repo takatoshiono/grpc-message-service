@@ -1,11 +1,13 @@
 IMAGE_VERSION := 0.2.0
-GOOGLEAPIS_DIR := $(shell ghq list -p googleapis)
+GOOGLEAPIS_DIR := $(shell ghq list -p googleapis/googleapis)
+GOOGLEPROTOBUF_DIR := $(shell ghq list -p google/protobuf)
 
 protoc:
 	protoc \
 		--include_imports \
 		--include_source_info \
 		--proto_path=$(GOOGLEAPIS_DIR) \
+		--proto_path=$(GOOGLEPROTOBUF_DIR)/src \
 		--proto_path=. \
 		--descriptor_set_out=proto/api_descriptor.pb \
 		--go_out=plugins=grpc:. \

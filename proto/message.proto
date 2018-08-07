@@ -3,6 +3,7 @@ syntax = "proto3";
 package message;
 
 import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
 
 service MessageService {
   rpc CreateConversation (CreateConversationRequest) returns (Conversation) {
@@ -12,13 +13,13 @@ service MessageService {
   }
   rpc CreateMessage (CreateMessageRequest) returns (Message) {
     option (google.api.http) = {
-      post: "/v1/conversations/{conversation_id}/messages"
+      post: "/v1/{parent=conversations/*}/messages"
       body: "*"
     };
   }
   rpc GetMessages (GetMessagesRequest) returns (Messages) {
     option (google.api.http) = {
-      get: "/v1/conversations/{conversation_id}/messages"
+      get: "/v1/{parent=conversations/*}/messages"
     };
   }
 }
@@ -27,25 +28,29 @@ message CreateConversationRequest {
 }
 
 message Conversation {
-  string id = 1;
-  int64 created_at = 2;
+  string name = 1;
+  google.protobuf.Timestamp create_time = 2;
 }
 
 message CreateMessageRequest {
-  string conversation_id = 1;
-  string sender = 2;
-  string body = 3;
+  // Resource name of the parent conversation.
+  string parent = 1;
+  // Message to be created. The name and create_time are set on server side, so client must not set.
+  Message message = 2;
 }
 
 message Message {
-  string conversation_id = 1;
+  string name = 1;
+  // The someone who sent the message.
   string sender = 2;
+  // The body of message.
   string body = 3;
-  int64 created_at = 4;
+  google.protobuf.Timestamp create_time = 4;
 }
 
 message GetMessagesRequest {
-  string conversation_id = 1;
+  // Resource name of the parent conversation.
+  string parent = 1;
 }
 
 message Messages {

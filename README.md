@@ -27,7 +27,8 @@ $ curl -H "x-api-key: API_KEY" -X POST http://HOST:PORT/v1/conversations
 
 - Install [Google Cloud SDK](https://cloud.google.com/sdk/) and setup
 - Install [ghq](https://github.com/motemen/ghq)
-- Clone [googleapis](https://github.com/googleapis/googleapis) using `ghq get`
+- Clone [googleapis/googleapis](https://github.com/googleapis/googleapis) using `ghq get`
+- Clone [google/protobuf](https://github.com/google/protobuf) using `ghq get`
 
 ### Create cluster
 

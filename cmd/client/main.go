@@ -14,7 +14,7 @@ const defaultHostPort = ":50101"
 
 func main() {
 	key := flag.String("api-key", "", "API key")
-	hostPort := flag.String("host-port", "", "Service host and port (e.g., '"+defaultHostPort+"')")
+	hostPort := flag.String("host-port", defaultHostPort, "Service host and port (e.g., '"+defaultHostPort+"')")
 	flag.Parse()
 
 	conn, err := grpc.Dial(*hostPort, grpc.WithInsecure())
@@ -36,16 +36,15 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to CraeteConversation(): %v", err)
 	}
-	log.Printf("created %v", conversation)
+	log.Printf("created Conversation %v", conversation)
 
 	messReq := &pb.CreateMessageRequest{
-		ConversationId: conversation.Id,
-		Sender:         "bob",
-		Body:           "This is bob. Hello alice.",
+		Parent:  conversation.Name,
+		Message: &pb.Message{Sender: "bob", Body: "This is bob. Hello alice."},
 	}
 	message, err := client.CreateMessage(ctx, messReq)
 	if err != nil {
 		log.Fatalf("failed to CreateMessage(): %v", err)
 	}
-	log.Printf("created %v", message)
+	log.Printf("created Message %v", message)
 }
