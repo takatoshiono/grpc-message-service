@@ -3,6 +3,7 @@ package cloud_datastore
 import (
 	"context"
 	"log"
+	"time"
 
 	"cloud.google.com/go/datastore"
 
@@ -13,6 +14,10 @@ type ConversationRespository struct {
 	client *datastore.Client
 }
 
+type conversation struct {
+	CreatedAt time.Time
+}
+
 func NewConversationRepository() (*ConversationRespository, error) {
 	client, err := NewCloudDatastoreClient()
 	if err != nil {
@@ -21,13 +26,14 @@ func NewConversationRepository() (*ConversationRespository, error) {
 	return &ConversationRespository{client: client}, nil
 }
 
-func (r *ConversationRespository) Save(c *entity.Conversation) (*entity.Conversation, error) {
+func (r *ConversationRespository) Save(e *entity.Conversation) (*entity.Conversation, error) {
 	ctx := context.Background()
-	k := datastore.NameKey("Conversation", c.ID, nil)
+	k := datastore.NameKey("Conversation", e.ID, nil)
+	c := &conversation{CreatedAt: e.CreatedAt}
 	_, err := r.client.Put(ctx, k, c)
 	if err != nil {
 		log.Printf("Failed to save conversation: %v", err)
-		return c, err
+		return e, err
 	}
-	return c, nil
+	return e, nil
 }
