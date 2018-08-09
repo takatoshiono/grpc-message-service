@@ -11,9 +11,9 @@ type Message struct {
 	ConversationID string
 	Sender         string
 	Body           string
-	CreatedAt      int64
+	CreatedAt      time.Time
 }
 
 func NewMessage(c Conversation, sender string, body string) *Message {
-	return &Message{ID: uuid.New().String(), ConversationID: c.ID, Sender: sender, Body: body, CreatedAt: time.Now().Unix()}
+	return &Message{ID: uuid.New().String(), ConversationID: c.ID, Sender: sender, Body: body, CreatedAt: time.Now()}
 }

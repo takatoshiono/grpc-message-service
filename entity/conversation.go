@@ -8,9 +8,9 @@ import (
 
 type Conversation struct {
 	ID        string
-	CreatedAt int64
+	CreatedAt time.Time
 }
 
 func NewConversation() *Conversation {
-	return &Conversation{ID: uuid.New().String(), CreatedAt: time.Now().Unix()}
+	return &Conversation{ID: uuid.New().String(), CreatedAt: time.Now()}
 }
