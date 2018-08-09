@@ -22,8 +22,8 @@ func NewMessageRepository() (*MessageRepository, error) {
 
 func (r *MessageRepository) Save(m *entity.Message) (*entity.Message, error) {
 	ctx := context.Background()
-	parentKey := datastore.NameKey("Conversation", m.ConversationId, nil)
-	k := datastore.NameKey("Message", m.Id, parentKey)
+	parentKey := datastore.NameKey("Conversation", m.ConversationID, nil)
+	k := datastore.NameKey("Message", m.ID, parentKey)
 	_, err := r.client.Put(ctx, k, m)
 	if err != nil {
 		log.Printf("Failed to create message: %v", err)

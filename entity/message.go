@@ -1,15 +1,19 @@
 package entity
 
-import "time"
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
 
 type Message struct {
-	Id             string
-	ConversationId string
+	ID             string
+	ConversationID string
 	Sender         string
 	Body           string
 	CreatedAt      int64
 }
 
 func NewMessage(c Conversation, sender string, body string) *Message {
-	return &Message{Id: "m123", ConversationId: c.Id, Sender: sender, Body: body, CreatedAt: time.Now().Unix()}
+	return &Message{ID: uuid.New().String(), ConversationID: c.ID, Sender: sender, Body: body, CreatedAt: time.Now().Unix()}
 }

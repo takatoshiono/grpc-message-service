@@ -1,12 +1,16 @@
 package entity
 
-import "time"
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
 
 type Conversation struct {
-	Id        string
+	ID        string
 	CreatedAt int64
 }
 
 func NewConversation() *Conversation {
-	return &Conversation{Id: "abcd1234", CreatedAt: time.Now().Unix()}
+	return &Conversation{ID: uuid.New().String(), CreatedAt: time.Now().Unix()}
 }

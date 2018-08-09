@@ -23,7 +23,7 @@ func NewConversationRepository() (*ConversationRespository, error) {
 
 func (r *ConversationRespository) Save(c *entity.Conversation) (*entity.Conversation, error) {
 	ctx := context.Background()
-	k := datastore.NameKey("Conversation", c.Id, nil)
+	k := datastore.NameKey("Conversation", c.ID, nil)
 	_, err := r.client.Put(ctx, k, c)
 	if err != nil {
 		log.Printf("Failed to save conversation: %v", err)
