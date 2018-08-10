@@ -2,10 +2,13 @@ package main
 
 import (
 	"context"
+	"log"
 	"strings"
 
 	"github.com/golang/protobuf/ptypes"
+	"github.com/takatoshiono/grpc-message-service/entity"
 	pb "github.com/takatoshiono/grpc-message-service/proto"
+	"github.com/takatoshiono/grpc-message-service/repository/cloud_datastore"
 )
 
 type server struct{}
@@ -15,18 +18,18 @@ func NewMessageServer() *server {
 }
 
 func (s *server) CreateConversation(ctx context.Context, in *pb.CreateConversationRequest) (*pb.Conversation, error) {
-	conversation := &pb.Conversation{Name: "conversations/abc123", CreateTime: ptypes.TimestampNow()}
-	return conversation, nil
-
-	//	c := entity.NewConversation()
-	//	r, err := cloud_datastore.NewConversationRepository()
-	//	if err != nil {
-	//		// FIXME: What should we do here?
-	//		log.Fatalf("Failed to create ConversationRepository: %v", err)
-	//	}
-	//	r.Save(c)
-	//
-	//	return &pb.Conversation{Id: c.Id, CreatedAt: c.CreatedAt}, nil
+	c := entity.NewConversation()
+	r, err := cloud_datastore.NewConversationRepository()
+	if err != nil {
+		// FIXME: What should we do here?
+		log.Fatalf("Failed to create ConversationRepository: %v", err)
+	}
+	r.Save(c)
+	createTime, err := ptypes.TimestampProto(c.CreatedAt)
+	if err != nil {
+		log.Fatalf("Failed to create Timestamp proto: %v", err)
+	}
+	return &pb.Conversation{Name: c.Name(), CreateTime: createTime}, nil
 }
 
 func (s *server) CreateMessage(ctx context.Context, in *pb.CreateMessageRequest) (*pb.Message, error) {
