@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"strings"
 
@@ -33,9 +34,33 @@ func (s *server) CreateConversation(ctx context.Context, in *pb.CreateConversati
 }
 
 func (s *server) CreateMessage(ctx context.Context, in *pb.CreateMessageRequest) (*pb.Message, error) {
-	name := strings.Join([]string{in.Parent, "messages/msg111"}, "/")
-	message := &pb.Message{Name: name, Sender: in.Message.Sender, Body: in.Message.Body, CreateTime: ptypes.TimestampNow()}
-	return message, nil
+	// parent must have a relative resource name of the Conversation.
+	parentNameParts := strings.Split(in.Parent, "/")
+	if !(len(parentNameParts) == 2 && parentNameParts[0] == "conversations") {
+		return nil, fmt.Errorf("parent not found: %s", in.Parent)
+	}
+
+	cRepo, err := cloud_datastore.NewConversationRepository()
+	if err != nil {
+		log.Fatalf("failed to create ConversationRepository: %v", err)
+	}
+
+	c, err := cRepo.Get(parentNameParts[1])
+	if err != nil {
+		log.Fatalf("Failed to get conversation: %v", err)
+	}
+
+	m := entity.NewMessage(*c, in.Message.Sender, in.Message.Body)
+	r, err := cloud_datastore.NewMessageRepository()
+	if err != nil {
+		log.Fatalf("Failed to create MessageRepository: %v", err)
+	}
+	r.Save(m)
+	createTime, err := ptypes.TimestampProto(m.CreatedAt)
+	if err != nil {
+		log.Fatalf("Failed to create Timestamp proto: %v", err)
+	}
+	return &pb.Message{Name: m.Name(), Sender: m.Sender, Body: m.Body, CreateTime: createTime}, nil
 }
 
 func (s *server) GetMessages(ctx context.Context, in *pb.GetMessagesRequest) (*pb.Messages, error) {

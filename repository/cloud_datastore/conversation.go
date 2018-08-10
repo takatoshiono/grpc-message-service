@@ -37,3 +37,18 @@ func (r *ConversationRespository) Save(e *entity.Conversation) (*entity.Conversa
 	}
 	return e, nil
 }
+
+func (r *ConversationRespository) Get(ID string) (*entity.Conversation, error) {
+	ctx := context.Background()
+	k := datastore.NameKey("Conversation", ID, nil)
+	c := new(conversation)
+	if err := r.client.Get(ctx, k, c); err != nil {
+		log.Printf("Failed to get conversation: %v", err)
+		return nil, err
+	}
+	return conversationEntity(ID, c), nil
+}
+
+func conversationEntity(ID string, c *conversation) *entity.Conversation {
+	return &entity.Conversation{ID: ID, CreatedAt: c.CreatedAt}
+}
