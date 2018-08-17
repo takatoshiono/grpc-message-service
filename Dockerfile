@@ -1,6 +1,7 @@
 FROM golang:1.10 AS build
 
 RUN go get -u -v google.golang.org/grpc
+RUN go get -u -v github.com/google/uuid
 
 WORKDIR /go/src/github.com/takatoshiono/grpc-message-service
 COPY . .

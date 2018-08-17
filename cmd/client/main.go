@@ -47,4 +47,11 @@ func main() {
 		log.Fatalf("failed to CreateMessage(): %v", err)
 	}
 	log.Printf("created Message %v", message)
+
+	messesReq := &pb.GetMessagesRequest{Parent: conversation.Name}
+	messages, err := client.GetMessages(ctx, messesReq)
+	if err != nil {
+		log.Fatalf("failed to GetMessages: %v", err)
+	}
+	log.Printf("get Messages %v", messages)
 }

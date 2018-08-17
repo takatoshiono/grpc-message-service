@@ -7,6 +7,21 @@ $ make docker-build
 $ make docker-run
 ```
 
+## server(not docker) with [Cloud Datastore Emulator](https://cloud.google.com/datastore/docs/tools/datastore-emulator)
+
+start emulator.
+
+```
+$ gcloud beta emulators datastore start
+```
+
+in another terminal.
+
+```
+$ $(gcloud beta emulators datastore env-init)
+$ make run-server
+```
+
 ## client
 
 gRPC API
