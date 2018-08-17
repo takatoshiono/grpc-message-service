@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"strings"
 
@@ -34,18 +33,12 @@ func (s *server) CreateConversation(ctx context.Context, in *pb.CreateConversati
 }
 
 func (s *server) CreateMessage(ctx context.Context, in *pb.CreateMessageRequest) (*pb.Message, error) {
-	// parent must have a relative resource name of the Conversation.
-	parentNameParts := strings.Split(in.Parent, "/")
-	if !(len(parentNameParts) == 2 && parentNameParts[0] == "conversations") {
-		return nil, fmt.Errorf("parent not found: %s", in.Parent)
-	}
-
 	cRepo, err := cloud_datastore.NewConversationRepository()
 	if err != nil {
 		log.Fatalf("failed to create ConversationRepository: %v", err)
 	}
 
-	c, err := cRepo.Get(parentNameParts[1])
+	c, err := cRepo.Get(in.Parent)
 	if err != nil {
 		log.Fatalf("Failed to get conversation: %v", err)
 	}

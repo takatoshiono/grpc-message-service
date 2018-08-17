@@ -14,6 +14,7 @@ type MessageRepository struct {
 }
 
 type message struct {
+	ID        string
 	Sender    string
 	Body      string
 	CreatedAt time.Time
@@ -29,9 +30,12 @@ func NewMessageRepository() (*MessageRepository, error) {
 
 func (r *MessageRepository) Save(e *entity.Message) (*entity.Message, error) {
 	ctx := context.Background()
-	parentKey := datastore.NameKey("Conversation", e.ConversationID, nil)
-	k := datastore.NameKey("Message", e.ID, parentKey)
-	m := &message{Sender: e.Sender, Body: e.Body, CreatedAt: e.CreatedAt}
+
+	c := entity.Conversation{ID: e.ConversationID}
+	parentKey := datastore.NameKey("Conversation", c.Name(), nil)
+
+	k := datastore.NameKey("Message", e.Name(), parentKey)
+	m := &message{ID: e.ID, Sender: e.Sender, Body: e.Body, CreatedAt: e.CreatedAt}
 	_, err := r.client.Put(ctx, k, m)
 	if err != nil {
 		log.Printf("Failed to create message: %v", err)
