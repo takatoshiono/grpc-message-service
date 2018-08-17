@@ -43,3 +43,22 @@ func (r *MessageRepository) Save(e *entity.Message) (*entity.Message, error) {
 	}
 	return e, nil
 }
+
+func (r *MessageRepository) List(conversationName string) ([]*entity.Message, error) {
+	k := datastore.NameKey("Conversation", conversationName, nil)
+	q := datastore.NewQuery("Message").Ancestor(k)
+
+	ctx := context.Background()
+	var messages []*message
+	_, err := r.client.GetAll(ctx, q, &messages)
+	if err != nil {
+		log.Printf("Failed to get messages: %v", err)
+		return nil, err
+	}
+
+	entities := make([]*entity.Message, len(messages))
+	for i, m := range messages {
+		entities[i] = &entity.Message{ID: m.ID, Sender: m.Sender, Body: m.Body, CreatedAt: m.CreatedAt}
+	}
+	return entities, err
+}

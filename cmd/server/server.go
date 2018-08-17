@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"log"
-	"strings"
 
 	"github.com/golang/protobuf/ptypes"
 	"github.com/takatoshiono/grpc-message-service/entity"
@@ -57,8 +56,23 @@ func (s *server) CreateMessage(ctx context.Context, in *pb.CreateMessageRequest)
 }
 
 func (s *server) GetMessages(ctx context.Context, in *pb.GetMessagesRequest) (*pb.Messages, error) {
-	name := strings.Join([]string{in.Parent, "messages/msg111"}, "/")
-	message := &pb.Message{Name: name, Sender: "alice", Body: "Hello", CreateTime: ptypes.TimestampNow()}
-	messages := &pb.Messages{Messages: []*pb.Message{message}}
-	return messages, nil
+	r, err := cloud_datastore.NewMessageRepository()
+	if err != nil {
+		log.Fatalf("Failed to create MessageRepository: %v", err)
+	}
+
+	entities, err := r.List(in.Parent)
+	if err != nil {
+		log.Fatalf("Failed to get messages: %v", err)
+	}
+
+	var messages = make([]*pb.Message, len(entities))
+	for i, e := range entities {
+		createTime, err := ptypes.TimestampProto(e.CreatedAt)
+		if err != nil {
+			log.Fatalf("Failed to create Timestamp proto: %v", err)
+		}
+		messages[i] = &pb.Message{Name: e.Name(), Sender: e.Sender, Body: e.Body, CreateTime: createTime}
+	}
+	return &pb.Messages{Messages: messages}, nil
 }
