@@ -21,7 +21,7 @@ spec:
           ]
           ports:
             - containerPort: 9000
-        - image: asia.gcr.io/grpc-message-service/server:0.2.0
+        - image: asia.gcr.io/grpc-message-service/server:0.3.0
           imagePullPolicy: Always
           name: message-server
           ports:

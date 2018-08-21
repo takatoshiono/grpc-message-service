@@ -1,4 +1,4 @@
-IMAGE_VERSION := 0.2.0
+IMAGE_VERSION := 0.3.0
 GOOGLEAPIS_DIR := $(shell ghq list -p googleapis/googleapis)
 GOOGLEPROTOBUF_DIR := $(shell ghq list -p google/protobuf)
 
