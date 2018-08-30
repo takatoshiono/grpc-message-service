@@ -1,0 +1,19 @@
+version: "3"
+services:
+  app:
+    build: .
+    ports:
+      - 50101:50101
+    environment:
+      DATASTORE_EMULATOR_HOST: datastore:8081
+      DATASTORE_PROJECT_ID: grpc-message-service
+  datastore:
+    build: docker/datastore-emulator
+    volumes:
+      - datastore_data:/opt/datastore
+    ports:
+      - 8081:8081
+    environment:
+      CLOUDSDK_CORE_PROJECT: grpc-message-service
+volumes:
+  datastore_data:
