@@ -1,25 +1,11 @@
 # grpc-message-service
 
-## server
+## Development
+
+### server
 
 ```
-$ make docker-build
-$ make docker-run
-```
-
-## server(not docker) with [Cloud Datastore Emulator](https://cloud.google.com/datastore/docs/tools/datastore-emulator)
-
-start emulator.
-
-```
-$ gcloud beta emulators datastore start
-```
-
-in another terminal.
-
-```
-$ $(gcloud beta emulators datastore env-init)
-$ make run-server
+$ docker-compose up --build
 ```
 
 ## client
@@ -36,7 +22,7 @@ JSON API
 $ curl -H "x-api-key: API_KEY" -X POST http://HOST:PORT/v1/conversations
 ```
 
-## deploy
+## Deploy
 
 ### Prerequisites
 
@@ -44,6 +30,13 @@ $ curl -H "x-api-key: API_KEY" -X POST http://HOST:PORT/v1/conversations
 - Install [ghq](https://github.com/motemen/ghq)
 - Clone [googleapis/googleapis](https://github.com/googleapis/googleapis) using `ghq get`
 - Clone [google/protobuf](https://github.com/google/protobuf) using `ghq get`
+
+### Docker Image
+
+```
+$ make docker-build
+$ make deploy-image
+```
 
 ### Create cluster
 
